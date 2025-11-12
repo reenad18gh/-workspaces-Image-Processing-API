@@ -13,8 +13,8 @@ routes.get('/', async (req, res) => {
   }
 
   try {
-    const path = await resizeImage(filename, width, height)
-    res.sendFile(path)
+    const imagePath = await resizeImage(filename, width, height)
+    res.sendFile(imagePath)
   } catch {
     res.status(500).send('Error processing image.')
   }
