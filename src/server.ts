@@ -11,7 +11,7 @@ app.use(morgan('dev'))
 app.use('/api/images', routes)
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`)
+  console.log(`Server running on http://localhost:${port}`)
 })
 
 export default app
