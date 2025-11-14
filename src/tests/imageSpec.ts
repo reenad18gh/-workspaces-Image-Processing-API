@@ -1,4 +1,4 @@
-import { resizeImage } from '../utilities/imageProcessing';
+import { resizeImage } from '../../src/utils/resize';
 import fs from 'fs';
 import path from 'path';
 
@@ -12,8 +12,9 @@ describe('Image Processing Utility Function', () => {
   });
 
   afterAll(() => {
+    // حذف الصورة بعد الاختبار لتجنب التكرار
     if (fs.existsSync(outputPath)) {
-      fs.unlinkSync(outputPath); // حذف الصورة بعد الاختبار
+      fs.unlinkSync(outputPath);
     }
   });
 });
