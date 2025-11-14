@@ -1,19 +1,22 @@
 import { resizeImage } from '../utilities/imageProcessing';
-import fs from 'fs';
 import path from 'path';
+import fs from 'fs';
 
-describe('Image Processing Utility Function', () => {
-  const outputPath = path.resolve(__dirname, '../../images/thumb/test-200x200.jpg');
+const fullImagePath = path.resolve('./images/full/fjord.jpg');
+const thumbPath = path.resolve('./images/thumb/fjord_200_200.jpg');
 
-  it('should resize the image and save it to the thumb folder', async () => {
-    await resizeImage('test', 200, 200);
-    const fileExists = fs.existsSync(outputPath);
-    expect(fileExists).toBeTrue();
+describe('Image processing utility function', () => {
+  it('should create a resized image successfully', async () => {
+    if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
+    const result = await resizeImage(fullImagePath, thumbPath, 200, 200);
+    expect(result).toBeTruthy();
+    expect(fs.existsSync(thumbPath)).toBeTrue();
   });
 
-  afterAll(() => {
-    if (fs.existsSync(outputPath)) {
-      fs.unlinkSync(outputPath); // حذف الصورة بعد الاختبار
-    }
+  it('should throw an error if file does not exist', async () => {
+    const invalidPath = path.resolve('./images/full/nonexistent.jpg');
+    await expectAsync(
+      resizeImage(invalidPath, thumbPath, 200, 200)
+    ).toBeRejected();
   });
 });
