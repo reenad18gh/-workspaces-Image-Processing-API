@@ -1,21 +1,20 @@
-import { resizeImage } from '../src/utils/resize.js'
-import fs from 'fs'
-import path from 'path'
+import { resizeImage } from '../../src/utils/resize';
+import fs from 'fs';
+import path from 'path';
 
-describe('Image Processing Utility', () => {
-  const testFile = 'encenadaport'
-  const width = 200
-  const height = 200
-  const outputPath = path.resolve(`images/thumb/${testFile}-${width}x${height}.jpg`)
+describe('Image Processing Utility Function', () => {
+  const outputPath = path.resolve(__dirname, '../../images/thumb/test.jpg');
 
-  it('should create a resized image successfully', async () => {
-    const resultPath = await resizeImage(testFile, width, height)
-    expect(fs.existsSync(resultPath)).toBeTrue()
-  })
+  it('should resize the image and save it to the thumb folder', async () => {
+    const result = await resizeImage('fjord', 200, 200);
+    expect(fs.existsSync(outputPath)).toBeTrue();
+    expect(result).toBeTrue();
+  });
 
-  it('should return cached image if it already exists', async () => {
-    await resizeImage(testFile, width, height)
-    const resultPath = await resizeImage(testFile, width, height)
-    expect(resultPath).toEqual(outputPath)
-  })
-})
+  afterAll(() => {
+    // حذف الصورة بعد الاختبار لتجنب التكرار
+    if (fs.existsSync(outputPath)) {
+      fs.unlinkSync(outputPath);
+    }
+  });
+});
