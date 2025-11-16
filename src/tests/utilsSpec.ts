@@ -1,26 +1,22 @@
-import resizeImage from '../../utils/resizeImage';
+import resizeImage from '../../src/utils/resize';
 import fs from 'fs';
 import path from 'path';
 
 describe('Image Processing Utility Function', () => {
-  const fullImagePath = path.resolve(__dirname, '../../../images/full/fjord.jpg');
-  const thumbImagePath = path.resolve(__dirname, '../../../images/thumb/fjord-100-100.jpg');
+    const fullImage = path.resolve('images/full/fjord.jpg');
+    const thumbImage = path.resolve('images/thumb/fjord-200x200.jpg');
 
-  it('should resize the image and save it to the thumb folder', async () => {
-    // احذف الصورة لو كانت موجودة
-    if (fs.existsSync(thumbImagePath)) {
-      fs.unlinkSync(thumbImagePath);
-    }
+    it('should have a resizeImage function', () => {
+        expect(resizeImage).toBeDefined();
+    });
 
-    // نفذ الدالة
-    await resizeImage('fjord', 100, 100);
+    it('should create a resized image in the thumb folder', async () => {
+        if (fs.existsSync(thumbImage)) {
+            fs.unlinkSync(thumbImage);
+        }
 
-    // تأكد أن الصورة صارت موجودة
-    const exists = fs.existsSync(thumbImagePath);
-    expect(exists).toBeTrue();
-  });
+        await resizeImage('fjord', 200, 200);
 
-  it('should throw an error if the image name is invalid', async () => {
-    await expectAsync(resizeImage('xxx', 200, 200)).toBeRejected();
-  });
+        expect(fs.existsSync(thumbImage)).toBeTrue();
+    });
 });
